@@ -109,12 +109,22 @@ export default async function PoolPage({ params }: Props) {
               {pool.midReset && ` · Resets after Round ${pool.resetAfter}`}
             </p>
           </div>
-          {isAdmin && (
-            <div className="bg-gray-800 rounded-lg px-4 py-2 text-sm">
-              <span className="text-gray-400">Invite Code: </span>
-              <code className="text-red-400 font-mono">{pool.inviteCode}</code>
-            </div>
-          )}
+          <div className="flex gap-3">
+            <a
+              href={`/pool/${id}/picks`}
+              className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm"
+            >
+              📊 All Picks
+            </a>
+            {isAdmin && (
+              <a
+                href={`/pool/${id}/admin`}
+                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm"
+              >
+                ⚙️ Admin
+              </a>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
