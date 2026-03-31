@@ -25,32 +25,31 @@ const DRIVERS_2026 = [
   { externalId: "gabriel_bortoleto", code: "BOR", name: "Gabriel Bortoleto", team: "Kick Sauber", number: 5 },
 ];
 
-// 2026 F1 Calendar (pick deadlines = Friday qualifying, approx times)
+// Official 2026 F1 Calendar (from formula1.com)
+// Pick deadlines = Friday of race weekend (qualifying day), 2h before sessions
 const RACES_2026 = [
-  { round: 1, name: "Australian Grand Prix", circuit: "Albert Park", country: "Australia", raceDate: "2026-03-15T05:00:00Z", pickDeadline: "2026-03-13T05:00:00Z" },
-  { round: 2, name: "Chinese Grand Prix", circuit: "Shanghai International", country: "China", raceDate: "2026-03-29T07:00:00Z", pickDeadline: "2026-03-27T07:00:00Z", sprint: "2026-03-28T07:00:00Z" },
-  { round: 3, name: "Japanese Grand Prix", circuit: "Suzuka", country: "Japan", raceDate: "2026-04-12T06:00:00Z", pickDeadline: "2026-04-10T06:00:00Z" },
-  { round: 4, name: "Bahrain Grand Prix", circuit: "Bahrain International", country: "Bahrain", raceDate: "2026-04-19T15:00:00Z", pickDeadline: "2026-04-17T15:00:00Z" },
-  { round: 5, name: "Saudi Arabian Grand Prix", circuit: "Jeddah Corniche", country: "Saudi Arabia", raceDate: "2026-04-26T17:00:00Z", pickDeadline: "2026-04-24T17:00:00Z" },
-  { round: 6, name: "Miami Grand Prix", circuit: "Miami International", country: "USA", raceDate: "2026-05-10T19:00:00Z", pickDeadline: "2026-05-08T19:00:00Z", sprint: "2026-05-09T19:00:00Z" },
-  { round: 7, name: "Emilia Romagna Grand Prix", circuit: "Imola", country: "Italy", raceDate: "2026-05-24T13:00:00Z", pickDeadline: "2026-05-22T13:00:00Z" },
-  { round: 8, name: "Monaco Grand Prix", circuit: "Circuit de Monaco", country: "Monaco", raceDate: "2026-05-31T13:00:00Z", pickDeadline: "2026-05-29T13:00:00Z" },
-  { round: 9, name: "Spanish Grand Prix", circuit: "Barcelona-Catalunya", country: "Spain", raceDate: "2026-06-14T13:00:00Z", pickDeadline: "2026-06-12T13:00:00Z" },
-  { round: 10, name: "Canadian Grand Prix", circuit: "Gilles Villeneuve", country: "Canada", raceDate: "2026-06-28T18:00:00Z", pickDeadline: "2026-06-26T18:00:00Z" },
-  { round: 11, name: "Austrian Grand Prix", circuit: "Red Bull Ring", country: "Austria", raceDate: "2026-07-12T13:00:00Z", pickDeadline: "2026-07-10T13:00:00Z", sprint: "2026-07-11T13:00:00Z" },
-  { round: 12, name: "British Grand Prix", circuit: "Silverstone", country: "United Kingdom", raceDate: "2026-07-19T14:00:00Z", pickDeadline: "2026-07-17T14:00:00Z" },
-  { round: 13, name: "Belgian Grand Prix", circuit: "Spa-Francorchamps", country: "Belgium", raceDate: "2026-07-26T13:00:00Z", pickDeadline: "2026-07-24T13:00:00Z", sprint: "2026-07-25T13:00:00Z" },
-  { round: 14, name: "Hungarian Grand Prix", circuit: "Hungaroring", country: "Hungary", raceDate: "2026-08-02T13:00:00Z", pickDeadline: "2026-07-31T13:00:00Z" },
-  { round: 15, name: "Dutch Grand Prix", circuit: "Zandvoort", country: "Netherlands", raceDate: "2026-08-30T13:00:00Z", pickDeadline: "2026-08-28T13:00:00Z" },
-  { round: 16, name: "Italian Grand Prix", circuit: "Monza", country: "Italy", raceDate: "2026-09-06T13:00:00Z", pickDeadline: "2026-09-04T13:00:00Z" },
-  { round: 17, name: "Azerbaijan Grand Prix", circuit: "Baku City", country: "Azerbaijan", raceDate: "2026-09-20T11:00:00Z", pickDeadline: "2026-09-18T11:00:00Z" },
-  { round: 18, name: "Singapore Grand Prix", circuit: "Marina Bay", country: "Singapore", raceDate: "2026-10-04T12:00:00Z", pickDeadline: "2026-10-02T12:00:00Z" },
-  { round: 19, name: "United States Grand Prix", circuit: "COTA", country: "USA", raceDate: "2026-10-18T19:00:00Z", pickDeadline: "2026-10-16T19:00:00Z", sprint: "2026-10-17T19:00:00Z" },
-  { round: 20, name: "Mexico City Grand Prix", circuit: "Hermanos Rodriguez", country: "Mexico", raceDate: "2026-10-25T20:00:00Z", pickDeadline: "2026-10-23T20:00:00Z" },
-  { round: 21, name: "São Paulo Grand Prix", circuit: "Interlagos", country: "Brazil", raceDate: "2026-11-08T17:00:00Z", pickDeadline: "2026-11-06T17:00:00Z", sprint: "2026-11-07T17:00:00Z" },
-  { round: 22, name: "Las Vegas Grand Prix", circuit: "Las Vegas Strip", country: "USA", raceDate: "2026-11-22T06:00:00Z", pickDeadline: "2026-11-20T06:00:00Z" },
-  { round: 23, name: "Qatar Grand Prix", circuit: "Lusail", country: "Qatar", raceDate: "2026-11-29T14:00:00Z", pickDeadline: "2026-11-27T14:00:00Z" },
-  { round: 24, name: "Abu Dhabi Grand Prix", circuit: "Yas Marina", country: "Abu Dhabi", raceDate: "2026-12-06T13:00:00Z", pickDeadline: "2026-12-04T13:00:00Z" },
+  { round: 1, name: "Australian Grand Prix", circuit: "Albert Park", country: "Australia", raceDate: "2026-03-08T05:00:00Z", pickDeadline: "2026-03-06T03:00:00Z" },
+  { round: 2, name: "Chinese Grand Prix", circuit: "Shanghai International", country: "China", raceDate: "2026-03-15T07:00:00Z", pickDeadline: "2026-03-13T05:00:00Z" },
+  { round: 3, name: "Japanese Grand Prix", circuit: "Suzuka", country: "Japan", raceDate: "2026-03-29T06:00:00Z", pickDeadline: "2026-03-27T04:00:00Z" },
+  { round: 4, name: "Miami Grand Prix", circuit: "Miami International", country: "USA", raceDate: "2026-05-03T19:00:00Z", pickDeadline: "2026-05-01T17:00:00Z" },
+  { round: 5, name: "Canadian Grand Prix", circuit: "Gilles Villeneuve", country: "Canada", raceDate: "2026-05-24T18:00:00Z", pickDeadline: "2026-05-22T16:00:00Z" },
+  { round: 6, name: "Monaco Grand Prix", circuit: "Circuit de Monaco", country: "Monaco", raceDate: "2026-06-07T13:00:00Z", pickDeadline: "2026-06-05T11:00:00Z" },
+  { round: 7, name: "Barcelona-Catalunya Grand Prix", circuit: "Barcelona-Catalunya", country: "Spain", raceDate: "2026-06-14T13:00:00Z", pickDeadline: "2026-06-12T11:00:00Z" },
+  { round: 8, name: "Austrian Grand Prix", circuit: "Red Bull Ring", country: "Austria", raceDate: "2026-06-28T13:00:00Z", pickDeadline: "2026-06-26T11:00:00Z" },
+  { round: 9, name: "British Grand Prix", circuit: "Silverstone", country: "United Kingdom", raceDate: "2026-07-05T14:00:00Z", pickDeadline: "2026-07-03T12:00:00Z" },
+  { round: 10, name: "Belgian Grand Prix", circuit: "Spa-Francorchamps", country: "Belgium", raceDate: "2026-07-19T13:00:00Z", pickDeadline: "2026-07-17T11:00:00Z" },
+  { round: 11, name: "Hungarian Grand Prix", circuit: "Hungaroring", country: "Hungary", raceDate: "2026-07-26T13:00:00Z", pickDeadline: "2026-07-24T11:00:00Z" },
+  { round: 12, name: "Dutch Grand Prix", circuit: "Zandvoort", country: "Netherlands", raceDate: "2026-08-23T13:00:00Z", pickDeadline: "2026-08-21T11:00:00Z" },
+  { round: 13, name: "Italian Grand Prix", circuit: "Monza", country: "Italy", raceDate: "2026-09-06T13:00:00Z", pickDeadline: "2026-09-04T11:00:00Z" },
+  { round: 14, name: "Spanish Grand Prix", circuit: "Valencia / TBD", country: "Spain", raceDate: "2026-09-13T13:00:00Z", pickDeadline: "2026-09-11T11:00:00Z" },
+  { round: 15, name: "Azerbaijan Grand Prix", circuit: "Baku City", country: "Azerbaijan", raceDate: "2026-09-26T11:00:00Z", pickDeadline: "2026-09-24T09:00:00Z" },
+  { round: 16, name: "Singapore Grand Prix", circuit: "Marina Bay", country: "Singapore", raceDate: "2026-10-11T12:00:00Z", pickDeadline: "2026-10-09T10:00:00Z" },
+  { round: 17, name: "United States Grand Prix", circuit: "COTA", country: "USA", raceDate: "2026-10-25T19:00:00Z", pickDeadline: "2026-10-23T17:00:00Z" },
+  { round: 18, name: "Mexico City Grand Prix", circuit: "Hermanos Rodriguez", country: "Mexico", raceDate: "2026-11-01T20:00:00Z", pickDeadline: "2026-10-30T18:00:00Z" },
+  { round: 19, name: "São Paulo Grand Prix", circuit: "Interlagos", country: "Brazil", raceDate: "2026-11-08T17:00:00Z", pickDeadline: "2026-11-06T15:00:00Z" },
+  { round: 20, name: "Las Vegas Grand Prix", circuit: "Las Vegas Strip", country: "USA", raceDate: "2026-11-21T06:00:00Z", pickDeadline: "2026-11-19T04:00:00Z" },
+  { round: 21, name: "Qatar Grand Prix", circuit: "Lusail", country: "Qatar", raceDate: "2026-11-29T14:00:00Z", pickDeadline: "2026-11-27T12:00:00Z" },
+  { round: 22, name: "Abu Dhabi Grand Prix", circuit: "Yas Marina", country: "Abu Dhabi", raceDate: "2026-12-06T13:00:00Z", pickDeadline: "2026-12-04T11:00:00Z" },
 ];
 
 async function main() {
@@ -64,6 +63,12 @@ async function main() {
   }
   console.log(`  ✅ ${DRIVERS_2026.length} drivers`);
 
+  // Delete old races that no longer exist (rounds 23, 24)
+  await prisma.race.deleteMany({
+    where: { season: 2026, round: { gt: 22 } },
+  });
+  console.log("  🗑️ Removed stale rounds > 22");
+
   console.log("Seeding races...");
   for (const race of RACES_2026) {
     await prisma.race.upsert({
@@ -73,7 +78,7 @@ async function main() {
         circuit: race.circuit,
         country: race.country,
         raceDate: new Date(race.raceDate),
-        sprintDate: race.sprint ? new Date(race.sprint) : null,
+        sprintDate: null,
         pickDeadline: new Date(race.pickDeadline),
       },
       create: {
@@ -83,7 +88,7 @@ async function main() {
         circuit: race.circuit,
         country: race.country,
         raceDate: new Date(race.raceDate),
-        sprintDate: race.sprint ? new Date(race.sprint) : null,
+        sprintDate: null,
         pickDeadline: new Date(race.pickDeadline),
       },
     });
