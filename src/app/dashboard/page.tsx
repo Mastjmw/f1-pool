@@ -10,6 +10,10 @@ export default async function DashboardPage() {
 
   const user = session.user as any;
 
+  // Get full user for role check
+  const fullUser = await prisma.user.findUnique({ where: { id: user.id } });
+  const isSuperAdmin = fullUser?.role === "superadmin";
+
   const memberships = await prisma.poolMember.findMany({
     where: { userId: user.id },
     include: {
@@ -30,12 +34,22 @@ export default async function DashboardPage() {
             <h1 className="text-3xl font-bold">🏎️ F1 Pool</h1>
             <p className="text-gray-400">Welcome back, {user.name}</p>
           </div>
-          <Link
-            href="/api/auth/signout"
-            className="text-gray-400 hover:text-white transition"
-          >
-            Sign Out
-          </Link>
+          <div className="flex gap-3 items-center">
+            {isSuperAdmin && (
+              <Link
+                href="/admin"
+                className="px-3 py-1 bg-red-900 text-red-300 rounded-lg text-sm hover:bg-red-800 transition"
+              >
+                🔑 Super Admin
+              </Link>
+            )}
+            <Link
+              href="/api/auth/signout"
+              className="text-gray-400 hover:text-white transition"
+            >
+              Sign Out
+            </Link>
+          </div>
         </div>
 
         {/* Pool List */}
