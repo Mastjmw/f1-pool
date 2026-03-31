@@ -3,6 +3,14 @@
     {
       "path": "/api/notify/reminders?secret=${CRON_SECRET}",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/import-results?secret=${CRON_SECRET}",
+      "schedule": "0 22 * * 0"
+    },
+    {
+      "path": "/api/cron/import-results?secret=${CRON_SECRET}",
+      "schedule": "0 10 * * 1"
     }
   ]
 }
