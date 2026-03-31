@@ -4,7 +4,64 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "F1 Pool <noreply@f1pool.app>";
+const FROM_EMAIL = process.env.FROM_EMAIL || "F1 Pool <onboarding@resend.dev>";
+const BASE_URL = process.env.NEXTAUTH_URL || "https://f1-pool.vercel.app";
+
+export async function sendVerificationEmail(to: string, name: string, token: string) {
+  const url = `${BASE_URL}/verify?token=${token}`;
+
+  if (!resend) {
+    console.log(`[EMAIL STUB] Verification to ${to}: ${url}`);
+    return;
+  }
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: "🏎️ Verify your F1 Pool account",
+    html: `
+      <div style="font-family: system-ui, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #ef4444;">🏎️ F1 Pool — Verify Your Email</h2>
+        <p>Hey ${name},</p>
+        <p>Click the button below to verify your email and activate your account:</p>
+        <p style="margin: 24px 0;">
+          <a href="${url}" style="background: #ef4444; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+            Verify Email
+          </a>
+        </p>
+        <p style="color: #888; font-size: 12px;">This link expires in 1 hour. If you didn't create this account, ignore this email.</p>
+      </div>
+    `,
+  });
+}
+
+export async function sendPasswordResetEmail(to: string, name: string, token: string) {
+  const url = `${BASE_URL}/reset-password?token=${token}`;
+
+  if (!resend) {
+    console.log(`[EMAIL STUB] Password reset to ${to}: ${url}`);
+    return;
+  }
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: "🏎️ Reset your F1 Pool password",
+    html: `
+      <div style="font-family: system-ui, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #ef4444;">🏎️ F1 Pool — Password Reset</h2>
+        <p>Hey ${name},</p>
+        <p>Click the button below to reset your password:</p>
+        <p style="margin: 24px 0;">
+          <a href="${url}" style="background: #ef4444; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+            Reset Password
+          </a>
+        </p>
+        <p style="color: #888; font-size: 12px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+      </div>
+    `,
+  });
+}
 
 export async function sendPickReminder(
   to: string,

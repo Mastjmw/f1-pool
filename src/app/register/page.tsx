@@ -25,12 +25,12 @@ export default function RegisterPage() {
       }),
     });
 
+    const data = await res.json();
     if (!res.ok) {
-      const data = await res.json();
       setError(data.error || "Registration failed");
       setLoading(false);
     } else {
-      router.push("/login?registered=true");
+      router.push("/login?registered=true&verify=true");
     }
   }
 
