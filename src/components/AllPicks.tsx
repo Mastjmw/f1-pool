@@ -1,5 +1,7 @@
 "use client";
 
+import { DRIVER_META } from "@/lib/driver-meta";
+
 interface PickData {
   userId: string;
   userName: string;
@@ -58,11 +60,18 @@ export default function AllPicks({ race, picks }: Props) {
               key={pick.userId}
               className="flex justify-between items-center bg-gray-800 rounded-lg px-4 py-2"
             >
-              <div>
+              <div className="flex items-center gap-2">
                 <span className="font-semibold text-white">{pick.userName}</span>
-                <span className="text-gray-400 mx-2">→</span>
-                <span className="text-red-400 font-mono">{pick.driverCode}</span>
-                <span className="text-gray-500 text-sm ml-2">{pick.team}</span>
+                <span className="text-gray-400">→</span>
+                {DRIVER_META[pick.driverCode]?.headshot && (
+                  <img
+                    src={DRIVER_META[pick.driverCode].headshot}
+                    alt={pick.driverName}
+                    className="w-7 h-7 rounded-full object-cover bg-gray-700"
+                  />
+                )}
+                <span className="text-white font-medium">{pick.driverName}</span>
+                <span className="text-gray-500 text-sm">({pick.driverCode})</span>
               </div>
               <span
                 className={`font-bold text-lg ${

@@ -1,5 +1,7 @@
 "use client";
 
+import { DRIVER_META } from "@/lib/driver-meta";
+
 interface Pick {
   id: string;
   raceId: string;
@@ -54,7 +56,17 @@ export default function PickHistory({ picks, races }: Props) {
                   </td>
                   <td className="py-2 pr-4">
                     {pick ? (
-                      <span className="font-semibold text-white">{pick.driver.code}</span>
+                      <div className="flex items-center gap-2">
+                        {DRIVER_META[pick.driver.code]?.headshot && (
+                          <img
+                            src={DRIVER_META[pick.driver.code].headshot}
+                            alt={pick.driver.name}
+                            className="w-6 h-6 rounded-full object-cover bg-gray-700"
+                          />
+                        )}
+                        <span className="font-semibold text-white">{pick.driver.name}</span>
+                        <span className="text-gray-500 text-xs">({pick.driver.code})</span>
+                      </div>
                     ) : (
                       <span className="text-gray-500 italic">
                         {isPast ? "Missed" : "—"}
