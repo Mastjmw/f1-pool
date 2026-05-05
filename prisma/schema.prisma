@@ -102,6 +102,7 @@ model Driver {
   team        String
   number      Int
   season      Int      @default(2026)
+  active      Boolean  @default(true) // false for mid-season departures (e.g. Doohan, Tsunoda) — keeps pick history intact while hiding from the picker
   picks       Pick[]
   results     RaceResult[]
 }
