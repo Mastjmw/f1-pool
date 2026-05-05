@@ -88,7 +88,10 @@ export async function GET(req: Request) {
           const baseUrl = process.env.NEXTAUTH_URL || "https://f1-pool.vercel.app";
           await fetch(`${baseUrl}/api/notify/results`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "x-cron-secret": process.env.CRON_SECRET ?? "",
+            },
             body: JSON.stringify({ raceId: race.id }),
           });
         } catch (e) {

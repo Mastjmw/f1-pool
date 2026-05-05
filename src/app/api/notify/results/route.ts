@@ -2,8 +2,18 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendResultsSummary } from "@/lib/email";
 
-// Send result summary emails after results are imported
+// Send result summary emails after results are imported.
+// Caller must supply the cron secret (header or ?secret=) — same auth model
+// as the other cron endpoints, since this triggers a fan-out of emails.
 export async function POST(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const secret =
+    searchParams.get("secret") ?? req.headers.get("x-cron-secret");
+
+  if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { raceId } = await req.json();
 
   if (!raceId) {
