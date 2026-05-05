@@ -56,7 +56,10 @@ const RENAMES: Array<[string, string]> = [
 ];
 
 // Field updates keyed by the *new* externalId (post-rename).
-const UPDATES: Record<string, { team?: string; number?: number; name?: string; active?: boolean }> = {
+// Note: Doohan and Tsunoda remain in the DB and (until an `active` flag is
+// reintroduced in a follow-up PR) will still appear in the picker. They will
+// score zero so it's harmless, just visually noisy.
+const UPDATES: Record<string, { team?: string; number?: number; name?: string }> = {
   lawson:        { team: "RB" },                              // was incorrectly Red Bull
   hadjar:        { team: "Red Bull" },                        // was incorrectly RB
   hulkenberg:    { team: "Audi" },                            // rebrand from Kick Sauber
@@ -64,9 +67,6 @@ const UPDATES: Record<string, { team?: string; number?: number; name?: string; a
   max_verstappen:{ number: 3 },                               // lost the #1
   norris:        { number: 1 },                               // gained the #1 (2025 champion)
   antonelli:     { name: "Andrea Kimi Antonelli" },           // was "Kimi Antonelli"
-  // Departed
-  jack_doohan:   { active: false },
-  yuki_tsunoda:  { active: false },
 };
 
 const NEW_DRIVERS = [
@@ -135,7 +135,7 @@ async function main() {
     }
     console.log(`  + ${d.externalId} (${d.code}, ${d.name}, ${d.team})`);
     if (APPLY) {
-      await prisma.driver.create({ data: { ...d, season: 2026, active: true } });
+      await prisma.driver.create({ data: { ...d, season: 2026 } });
     }
   }
 

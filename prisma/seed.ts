@@ -77,8 +77,8 @@ async function main() {
   for (const driver of DRIVERS_2026) {
     await prisma.driver.upsert({
       where: { externalId: driver.externalId },
-      update: { ...driver, season: 2026, active: true },
-      create: { ...driver, season: 2026, active: true },
+      update: { ...driver, season: 2026 },
+      create: { ...driver, season: 2026 },
     });
   }
   console.log(`  ✅ ${DRIVERS_2026.length} drivers`);
