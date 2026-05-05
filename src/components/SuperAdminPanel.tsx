@@ -32,6 +32,33 @@ export default function SuperAdminPanel({ users, pools, currentUserId }: Props) 
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [tab, setTab] = useState<"users" | "pools">("users");
+  const [repairing, setRepairing] = useState(false);
+  const [repairResult, setRepairResult] = useState<null | {
+    summary: Record<string, number>;
+    log: string[];
+    importErrors: string[];
+  }>(null);
+
+  async function runRepair2026() {
+    if (!confirm("Run 2026 repair? Renames driver externalIds, adds Cadillac/Lindblad/Colapinto, wipes 2026 race results, and re-imports them. Picks are preserved. Safe to re-run.")) return;
+    setRepairing(true);
+    setRepairResult(null);
+    try {
+      const res = await fetch("/api/admin/repair-2026", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage(`❌ ${data.error || "Repair failed"}`);
+      } else {
+        setRepairResult(data);
+        setMessage(`✅ Repair complete — ${data.summary.raceResultsImported} results imported`);
+        router.refresh();
+      }
+    } catch (e: any) {
+      setMessage(`❌ ${e.message || "Repair failed"}`);
+    } finally {
+      setRepairing(false);
+    }
+  }
 
   async function toggleRole(userId: string, currentRole: string) {
     const newRole = currentRole === "superadmin" ? "user" : "superadmin";
@@ -95,6 +122,44 @@ export default function SuperAdminPanel({ users, pools, currentUserId }: Props) 
           {message}
         </div>
       )}
+
+      {/* 2026 Repair */}
+      <div className="bg-amber-950/30 border border-amber-800/50 rounded-xl p-4">
+        <div className="flex justify-between items-start gap-4">
+          <div>
+            <h3 className="font-semibold text-amber-200">🔧 2026 Driver Data Repair</h3>
+            <p className="text-amber-200/70 text-sm mt-1">
+              One-shot fix for the externalId/team drift between the seed and Jolpica. Adds Cadillac (Pérez/Bottas),
+              Lindblad, and Colapinto; renames externalIds; re-imports race results for completed rounds.
+              Picks are preserved. Safe to re-run.
+            </p>
+          </div>
+          <button
+            onClick={runRepair2026}
+            disabled={repairing}
+            className="px-4 py-2 bg-amber-700 hover:bg-amber-600 text-white rounded-lg text-sm whitespace-nowrap disabled:opacity-50"
+          >
+            {repairing ? "Running..." : "Run repair"}
+          </button>
+        </div>
+
+        {repairResult && (
+          <div className="mt-3 p-3 bg-gray-950 rounded-lg text-xs font-mono text-gray-300 max-h-64 overflow-y-auto">
+            <div className="text-amber-200 mb-2">
+              {Object.entries(repairResult.summary).map(([k, v]) => `${k}: ${v}`).join("  ·  ")}
+            </div>
+            {repairResult.log.map((line, i) => (
+              <div key={i} className="text-gray-400">{line}</div>
+            ))}
+            {repairResult.importErrors.length > 0 && (
+              <div className="mt-2 text-red-400">
+                <div>Import warnings:</div>
+                {repairResult.importErrors.map((e, i) => <div key={i}>  {e}</div>)}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2">
