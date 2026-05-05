@@ -8,26 +8,50 @@ import Link from "next/link";
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
+  const [resendStatus, setResendStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setUnverifiedEmail("");
+    setResendStatus("idle");
 
     const formData = new FormData(e.currentTarget);
+    const email = String(formData.get("email") ?? "");
+
     const res = await signIn("credentials", {
-      email: formData.get("email"),
+      email,
       password: formData.get("password"),
       redirect: false,
     });
 
+    if (res?.error === "EmailNotVerified") {
+      setUnverifiedEmail(email);
+      setLoading(false);
+      return;
+    }
+
     if (res?.error) {
       setError("Invalid email or password");
       setLoading(false);
-    } else {
-      router.push("/dashboard");
+      return;
     }
+
+    router.push("/dashboard");
+  }
+
+  async function resendVerification() {
+    if (!unverifiedEmail) return;
+    setResendStatus("sending");
+    await fetch("/api/resend-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: unverifiedEmail }),
+    });
+    setResendStatus("sent");
   }
 
   return (
@@ -53,6 +77,26 @@ export default function LoginPage() {
           />
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
+
+          {unverifiedEmail && (
+            <div className="rounded-lg border border-amber-700 bg-amber-950/40 p-3 text-sm">
+              <p className="text-amber-300 font-medium">Verify your email first</p>
+              <p className="text-amber-200/80 mt-1">
+                We sent a verification link to <strong>{unverifiedEmail}</strong> when you registered.
+                Check your inbox (and spam) before signing in.
+              </p>
+              <button
+                type="button"
+                onClick={resendVerification}
+                disabled={resendStatus !== "idle"}
+                className="mt-2 text-amber-300 underline hover:text-amber-200 disabled:opacity-50"
+              >
+                {resendStatus === "idle" && "Resend verification email"}
+                {resendStatus === "sending" && "Sending..."}
+                {resendStatus === "sent" && "✓ Sent — check your inbox"}
+              </button>
+            </div>
+          )}
 
           <button
             type="submit"

@@ -29,6 +29,12 @@ export const authOptions: NextAuthOptions = {
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) return null;
 
+        // Block login until email is verified. Throwing here surfaces the
+        // specific error to the client so the login page can offer a resend.
+        if (!user.emailVerified) {
+          throw new Error("EmailNotVerified");
+        }
+
         return { id: user.id, email: user.email, name: user.name, role: user.role };
       },
     }),
