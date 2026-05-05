@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendPickReminder } from "@/lib/email";
 
-// Cron-callable endpoint: sends pick reminders 24h before deadline
+// Cron-callable endpoint: sends pick reminders within REMINDER_WINDOW_HOURS of deadline.
+// Window is 48h so the daily noon-UTC cron always catches Friday-afternoon deadlines
+// (a 24h window misses any deadline >24h after the cron run on the day before).
 // Protect with a secret in production: ?secret=YOUR_CRON_SECRET
+const REMINDER_WINDOW_HOURS = 48;
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");
@@ -13,12 +17,11 @@ export async function GET(req: Request) {
   }
 
   const now = new Date();
-  const in24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const windowEnd = new Date(now.getTime() + REMINDER_WINDOW_HOURS * 60 * 60 * 1000);
 
-  // Find races with deadlines in the next 24 hours
   const upcomingRaces = await prisma.race.findMany({
     where: {
-      pickDeadline: { gt: now, lt: in24h },
+      pickDeadline: { gt: now, lt: windowEnd },
     },
   });
 
