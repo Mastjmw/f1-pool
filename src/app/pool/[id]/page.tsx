@@ -44,10 +44,11 @@ export default async function PoolPage({ params }: Props) {
     orderBy: { round: "asc" },
   });
 
-  // Note: filtering by active=true should be re-added once the
-  // 20260505000000_add_driver_active migration has been applied to prod.
+  // Active drivers only — departed drivers (Doohan, Tsunoda) stay in DB
+  // so their historical Pick rows still resolve, but they shouldn't appear
+  // in the picker for new races.
   const drivers = await prisma.driver.findMany({
-    where: { season: pool.season },
+    where: { season: pool.season, active: true },
     orderBy: { name: "asc" },
   });
 
